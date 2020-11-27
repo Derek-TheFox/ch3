@@ -1,5 +1,7 @@
-from django.shortcuts import render
-from polls.models import Question
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from polls.models import Choice, Question
 
 def index(request):
     latest_question_list = Question.objects.all().order_by('-pub_date')[:5]
@@ -11,8 +13,9 @@ def detail(request, question_id):
     return render(request, 'polls/detail.html', {'question': question})
 
 def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
     try:
-        selectd_choice = question.choice_set.get(pk=request.POST['choice'])
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
         return render(request, 'polls/detail.html', {
             'question': question,
