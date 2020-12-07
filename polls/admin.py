@@ -20,6 +20,9 @@ class QuestionAdmin(admin.ModelAdmin):
         ('Date information',    {'fields':['pub_date'], 'classes':['collapse']}),
     ]
     inlines = [ChoiceInline]   # Choice 모델 클래스 같이 보기
+    list_display = ('question_text', 'pub_date')
+    list_filter = ['pub_date']
+    search_fields = ['question_text']
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice)
